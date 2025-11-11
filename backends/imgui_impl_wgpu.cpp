@@ -7,6 +7,8 @@
 //  [X] Renderer: Large meshes support (64k+ vertices) even with 16-bit indices (ImGuiBackendFlags_RendererHasVtxOffset).
 //  [X] Renderer: Expose selected render state for draw callbacks to use. Access in '(ImGui_ImplXXXX_RenderState*)GetPlatformIO().Renderer_RenderState'.
 //  [X] Renderer: Texture updates support for dynamic font system (ImGuiBackendFlags_RendererHasTextures).
+// Missing features or Issues:
+//  [ ] Renderer: Multi-viewport support (multiple windows), useful for desktop.
 
 // Read imgui_impl_wgpu.h about how to use the IMGUI_IMPL_WEBGPU_BACKEND_WGPU or IMGUI_IMPL_WEBGPU_BACKEND_DAWN flags.
 
@@ -1015,7 +1017,7 @@ void ImGui_ImplWGPU_DebugPrintAdapterInfo(const WGPUAdapter& adapter)
     wgpuAdapterInfoFreeMembers(info);
 }
 
-#if defined(IMGUI_IMPL_WEBGPU_BACKEND_WGPU) || defined(IMGUI_IMPL_WEBGPU_BACKEND_DAWN) && !defined(__EMSCRIPTEN__)
+#ifndef __EMSCRIPTEN__
 
 #if defined(__APPLE__)
 // MacOS specific: is necessary to compile with "-x objective-c++" flags
@@ -1079,7 +1081,7 @@ WGPUSurface ImGui_ImplWGPU_CreateWGPUSurfaceHelper(ImGui_ImplWGPU_CreateSurfaceI
 #endif
     return surface;
 }
-#endif
+#endif // #ifndef __EMSCRIPTEN__
 
 //-----------------------------------------------------------------------------
 

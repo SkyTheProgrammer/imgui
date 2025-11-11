@@ -90,6 +90,7 @@ int main(int, char**)
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
@@ -506,7 +507,7 @@ static bool InitWGPU(GLFWwindow* window)
 // As of today (2025/10) there is no "official" support in GLFW to create a surface for WebGPU backend
 // This stub uses "low level" GLFW calls to acquire information from a specific Window Manager.
 // Currently supported platforms: Windows / Linux (X11 and Wayland) / MacOS. Not necessary nor available with EMSCRIPTEN.
-#if !defined(__EMSCRIPTEN__) && (defined(IMGUI_IMPL_WEBGPU_BACKEND_WGPU) || defined(IMGUI_IMPL_WEBGPU_BACKEND_DAWN))
+#ifndef __EMSCRIPTEN__
 
 #if defined(__linux__) || defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__DragonFly__)
 #define GLFW_HAS_X11_OR_WAYLAND     1
@@ -573,4 +574,4 @@ WGPUSurface CreateWGPUSurface(const WGPUInstance& instance, GLFWwindow* window)
 #endif
     return nullptr;
 }
-#endif
+#endif // #ifndef __EMSCRIPTEN__
